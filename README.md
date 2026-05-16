@@ -19,39 +19,6 @@
 
 ---
 
-## 🗂️ Project Structure
-
-```
-colon-cancer-ml/
-│
-├── docker-compose.yml
-│
-├── model/                        ← Generated after training
-│   ├── model.pkl
-│   ├── scaler.pkl
-│   └── selected_genes.json
-│
-├── training/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   ├── train.py
-│   └── data/
-│       └── colon_cancer_dataset.csv
-│
-└── app/
-    ├── Dockerfile
-    ├── requirements.txt
-    ├── backend/
-    │   ├── main.py
-    │   ├── predictor.py
-    │   └── schemas.py
-    └── frontend/
-        ├── index.html
-        ├── style.css
-        └── script.js
-```
-
----
 
 ## 🚀 Quick Start
 
@@ -158,39 +125,6 @@ FastAPI  →  Frontend  →  Prediction: Normal / Abnormal
 
 ---
 
-## 🛠️ Local Development (without Docker)
-
-### Training
-
-```bash
-cd training
-pip install -r requirements.txt
-python train.py
-```
-
-### Backend
-
-```bash
-cd app
-pip install -r requirements.txt
-uvicorn backend.main:app --reload --port 8000
-```
-
----
-
-## 🧪 Technologies Used
-
-- **Python 3.11**
-- **scikit-learn** — LogisticRegression, StandardScaler, LabelEncoder
-- **pandas / numpy** — Data manipulation
-- **joblib** — Model serialisation
-- **FastAPI** — REST API
-- **uvicorn** — ASGI server
-- **Pydantic v2** — Data validation
-- **Docker + Docker Compose** — Containerisation
-- **Vanilla HTML/CSS/JS** — Frontend
-
----
 
 ## ⚕️ Disclaimer
 

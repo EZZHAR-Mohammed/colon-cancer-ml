@@ -1,0 +1,28 @@
+services:
+
+  # ── Training container ─────────────────────────────────────────────────────
+  # Run manually:  docker compose run training
+  # Produces artefacts in ./model/ (shared volume)
+  training:
+    build:
+      context: ./training
+      dockerfile: Dockerfile
+    volumes:
+      - ./model:/app/model        # write artefacts here
+    restart: "no"                 # run once, then exit
+
+  # ── Application container ──────────────────────────────────────────────────
+  # Starts FastAPI (port 8000) + serves the frontend
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    volumes:
+      - ./model:/app/model        # read artefacts from shared volume
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_DIR=/app/model
+    restart: unless-stopped
+    # Wait for model artefacts to exist before starting
+    # (run `docker compose run training` first)

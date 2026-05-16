@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Colon Cancer Prediction System — Gene expression-based AI classifier using Forward Feature Selection and Logistic Regression." />
+  <title>Colon Cancer Predictor | AI Gene Expression Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🧬</span>
+        <span class="logo-text">ColonAI</span>
+        <span class="logo-badge">v1.0</span>
+      </div>
+      <nav class="nav-pills">
+        <a href="#predictor" class="nav-pill active">Predictor</a>
+        <a href="#about" class="nav-pill">About</a>
+        <a href="/docs" target="_blank" class="nav-pill">API Docs</a>
+      </nav>
+      <div id="status-indicator" class="status-dot loading" title="Checking API..."></div>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">Bioinformatics · Machine Learning</div>
+      <h1 class="hero-title">
+        Colon Cancer<br />
+        <span class="gradient-text">Gene Predictor</span>
+      </h1>
+      <p class="hero-subtitle">
+        AI-powered classifier trained on gene expression data using<br />
+        <strong>Forward Feature Selection</strong> &amp; <strong>Logistic Regression</strong>
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">62</span>
+          <span class="stat-label">Patients</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">~2000</span>
+          <span class="stat-label">Genes</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value" id="hero-gene-count">6</span>
+          <span class="stat-label">Selected</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">2</span>
+          <span class="stat-label">Classes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main predictor ── -->
+  <main class="main-content" id="predictor">
+    <div class="container">
+
+      <!-- Loading skeleton -->
+      <div id="loading-state" class="card loading-card">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading selected genes from model…</p>
+      </div>
+
+      <!-- Error state -->
+      <div id="error-state" class="card error-card hidden">
+        <span class="error-icon">⚠️</span>
+        <h3>Cannot connect to API</h3>
+        <p id="error-message">Make sure the backend is running on port 8000.</p>
+        <button class="btn btn-outline" onclick="loadGenes()">Retry</button>
+      </div>
+
+      <!-- Predictor form -->
+      <div id="predictor-panel" class="hidden">
+
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Gene Expression Input</h2>
+            <p class="panel-subtitle">Enter the standardised expression values for each selected gene</p>
+          </div>
+          <button class="btn btn-ghost" id="fill-demo-btn" title="Fill with demo values">
+            ✨ Demo values
+          </button>
+        </div>
+
+        <form id="predict-form" novalidate>
+          <div class="gene-grid" id="gene-inputs">
+            <!-- Dynamically generated -->
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-primary" id="predict-btn">
+              <span class="btn-icon">🔬</span>
+              Run Prediction
+            </button>
+            <button type="button" class="btn btn-outline" id="reset-btn">
+              Reset
+            </button>
+          </div>
+        </form>
+
+        <!-- Result card -->
+        <div id="result-card" class="result-card hidden">
+          <div class="result-inner">
+            <div class="result-header">
+              <span class="result-label">Prediction Result</span>
+              <button class="result-close" id="close-result">✕</button>
+            </div>
+            <div class="result-body">
+              <div class="result-badge-wrap">
+                <div id="result-badge" class="result-badge"></div>
+              </div>
+              <div class="confidence-block">
+                <span class="confidence-label">Model Confidence</span>
+                <div class="confidence-bar-bg">
+                  <div id="confidence-bar" class="confidence-bar"></div>
+                </div>
+                <span id="confidence-value" class="confidence-value"></span>
+              </div>
+            </div>
+            <p class="result-disclaimer">
+              ⚕️ This tool is for research purposes only. Always consult a medical professional.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ── About section ── -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <h2 class="section-title">How it works</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3>Data Loading</h3>
+          <p>62-patient colon cancer gene expression dataset (~2000 features) is loaded and standardised.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3>Forward Feature Selection</h3>
+          <p>Iteratively selects the top 10 genes that maximise Logistic Regression accuracy.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3>Model Training</h3>
+          <p>Final model trained on only the top 6 genes using 80/20 stratified train-test split.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <h3>Live Prediction</h3>
+          <p>Enter expression values, the API scales and classifies them as Normal or Abnormal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="container">
+      <p>🧬 ColonAI — Built with FastAPI · scikit-learn · Docker</p>
+      
+    </div>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
