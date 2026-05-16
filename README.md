@@ -99,32 +99,18 @@ FastAPI  →  Frontend  →  Prediction: Normal / Abnormal
 | POST   | `/predict`  | Predict Normal/Abnormal            |
 | GET    | `/docs`     | Interactive Swagger UI             |
 
-### POST /predict — Example
 
-**Request:**
-```json
+## Selected genes
 {
-  "genes": {
-    "Gene_54":  0.22,
-    "Gene_781": -1.4,
-    "Gene_122": 0.88,
-    "Gene_998": -0.3,
-    "Gene_15":  1.1,
-    "Gene_440": -0.6
-  }
+  "selected_genes": [
+    "M63391",
+    "T62947",
+    "D14812",
+    "T51250",
+    "H66976",
+    "X55362"
+  ]
 }
-```
-
-**Response:**
-```json
-{
-  "prediction": "Abnormal",
-  "confidence": 0.9421
-}
-```
-
----
-
 
 ## ⚕️ Disclaimer
 
